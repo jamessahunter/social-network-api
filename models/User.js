@@ -1,12 +1,37 @@
-const mongoose = require('mongoose');
+const {Schema, model} = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-    username: { type: String, unique: true, required: true, trim: true },
-    email: {type: String, unique: true, required: true, },
-    thoughts: {},
-    friends: {}
-})
+const userSchema = new Schema(
+    {
+        username: { type: String, unique: true, required: true, trim: true },
+        email: {type: String, unique: true, required: true, },
+        thoughts: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Thought'
+            },
+        ],
+        friends: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            },
+        ],
+    },
+    {
+        toJSON: {
+            virtuals:true
+        },
+        id: false,
+    }
+)
 
-const User = mongoose.model('User',userSchema);
+userSchema
+  .virtual('getFriends')
+  // Getter
+  .get(function () {
+    return this.friends.length;
+  });
+
+const User = model('User',userSchema);
 
 module.exports = User;
