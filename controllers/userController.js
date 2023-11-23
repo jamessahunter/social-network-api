@@ -3,7 +3,8 @@ const { User, Thought} = require('../models')
 module.exports = {
     async getUsers(req, res){
         try{
-            const users = await User.find();
+            const users = await User.find()
+            .populate('thoughts').populate('friends');
             res.json(users);
         }catch (err){
             res.status(500).json(err)
@@ -13,7 +14,7 @@ module.exports = {
   async getSingleUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.userId })
-        .select('-__v');
+        .select('-__v').populate('thoughts').populate('friends');
 
       if (!user) {
         return res.status(404).json({ message: 'No user with that ID' });
@@ -69,9 +70,6 @@ module.exports = {
   },
     // Add an friend to a user
     async addFriend(req, res) {
-        console.log('You are adding an friend');
-        // console.log(req.);
-    
         try {
           const user = await User.findOneAndUpdate(
             { _id: req.params.userId },
@@ -85,7 +83,7 @@ module.exports = {
               .json({ message: 'No user found with that ID :(' });
           }
     
-          res.json(user);
+          res.json('Friend Added');
         } catch (err) {
           res.status(500).json(err);
         }
@@ -95,17 +93,17 @@ module.exports = {
         try {
           const user = await User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $pull: { assignment: { userId: req.params.friendId } } },
+            { $pull: { friends: req.params.friendId } },
             { runValidators: true, new: true }
           );
-    
+
           if (!user) {
             return res
               .status(404)
               .json({ message: 'No user found with that ID :(' });
           }
     
-          res.json(user);
+          res.json("Friend Deleted");
         } catch (err) {
           res.status(500).json(err);
         }

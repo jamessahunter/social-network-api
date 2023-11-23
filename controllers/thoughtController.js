@@ -89,7 +89,7 @@ module.exports = {
               .json({ message: 'No thought found with that ID :(' });
           }
     
-          res.json(thought);
+          res.json('Reaction Added');
         } catch (err) {
           res.status(500).json(err);
         }
@@ -99,7 +99,7 @@ module.exports = {
         try {
           const thought = await Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
-            { $pull: { reaction: { thoughtId: req.params.reactionId } } },
+            { $pull: { reactions: { _id: req.params.reactionId } } },
             { runValidators: true, new: true }
           );
     
@@ -109,7 +109,7 @@ module.exports = {
               .json({ message: 'No thought found with that ID :(' });
           }
     
-          res.json(thought);
+          res.json('Reaction Deleted');
         } catch (err) {
           res.status(500).json(err);
         }
