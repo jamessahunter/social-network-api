@@ -51,7 +51,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // Update a user based of a specific id
+  // Update a user based off a specific id
   async updateUser(req, res) {
     try {
       const user = await User.findOneAndUpdate(
@@ -69,7 +69,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-    // Add an friend to a user based of specific ids
+    // Add an friend to a user based off specific ids
     async addFriend(req, res) {
         try {
           const user = await User.findOneAndUpdate(
