@@ -1,6 +1,7 @@
 const { User, Thought} = require('../models')
 
 module.exports = {
+  //gets all users with their corresponding thoughts and friends
     async getUsers(req, res){
         try{
             const users = await User.find()
@@ -10,7 +11,7 @@ module.exports = {
             res.status(500).json(err)
         }
     },
-      // Get a user
+      // Get a user based on the user id
   async getSingleUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.userId })
@@ -25,7 +26,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // Create a user
+  // Create a user 
   async createUser(req, res) {
     try {
       const user = await User.create(req.body);
@@ -35,7 +36,7 @@ module.exports = {
       return res.status(500).json(err);
     }
   },
-  // Delete a user
+  // Delete a user based on a specific id
   async deleteUser(req, res) {
     try {
       const user = await User.findOneAndDelete({ _id: req.params.userId });
@@ -43,14 +44,14 @@ module.exports = {
       if (!user) {
         res.status(404).json({ message: 'No user with that ID' });
       }
-
+      //deletes the users thoughts as well
       await Thought.deleteMany({ _id: { $in: user.thoughts } });
       res.json({ message: 'User and thoughts deleted!' });
     } catch (err) {
       res.status(500).json(err);
     }
   },
-  // Update a user
+  // Update a user based of a specific id
   async updateUser(req, res) {
     try {
       const user = await User.findOneAndUpdate(
@@ -68,7 +69,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-    // Add an friend to a user
+    // Add an friend to a user based of specific ids
     async addFriend(req, res) {
         try {
           const user = await User.findOneAndUpdate(
@@ -88,7 +89,7 @@ module.exports = {
           res.status(500).json(err);
         }
       },
-      // Remove friend from a user
+      // Remove friend from a user based of specific ids
       async deleteFriend(req, res) {
         try {
           const user = await User.findOneAndUpdate(
