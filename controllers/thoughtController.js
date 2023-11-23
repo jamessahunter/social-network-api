@@ -27,7 +27,13 @@ module.exports = {
   // Create a thought
   async createThought(req, res) {
     try {
+      // console.log(req.body.userId);
       const thought = await Thought.create(req.body);
+      const user = await User.findOneAndUpdate(
+        { _id: req.body.userId },
+        { $addToSet: { thoughts: thought}},
+        { runValidators: true, new: true }
+      );
       res.json(thought);
     } catch (err) {
       console.log(err);
@@ -40,9 +46,9 @@ module.exports = {
       const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
 
       if (!thought) {
-        res.status(404).json({ message: 'No thpught with that ID' });
+        res.status(404).json({ message: 'No thought with that ID' });
       }
-      res.json({ message: 'TThoughts deleted!' });
+      res.json({ message: 'Thought deleted!' });
     } catch (err) {
       res.status(500).json(err);
     }
@@ -68,12 +74,12 @@ module.exports = {
       // Add a reaction to a thought
       async addReaction(req, res) {
         console.log('You are adding an reaction');
-        console.log(req.body);
+        // console.log(req.body);
     
         try {
           const thought = await Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
-            { $addToSet: { friends: req.body } },
+            { $addToSet: { reactions: req.body } },
             { runValidators: true, new: true }
           );
     

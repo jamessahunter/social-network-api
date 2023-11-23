@@ -95,6 +95,25 @@ const appDescriptions = [
   'Deliveries',
 ];
 
+
+// Define the data to be seeded
+const users = [
+  { name: 'John Doe', email: 'johnD@example.com' },
+  { name: 'Jane Smith', email: 'janeS@example.com' },
+  { name: 'John Smith', email: 'johnS@example.com' },
+  { name: 'Jane Doe', email: 'janeD@example.com' },
+  { name: 'John Miller', email: 'johnM@example.com' },
+  { name: 'Jane Miller', email: 'janeM@example.com' },
+  // Add more data as needed
+];
+
+const thoughts = [
+  'This is fun',
+  'I had a great day',
+  'I had a bad day',
+  'What a great movie'
+]
+
 // Get a random item given an array
 const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 

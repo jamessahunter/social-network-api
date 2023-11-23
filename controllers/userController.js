@@ -12,7 +12,7 @@ module.exports = {
       // Get a user
   async getSingleUser(req, res) {
     try {
-      const user = await User.findOne({ _id: req.params.UserId })
+      const user = await User.findOne({ _id: req.params.userId })
         .select('-__v');
 
       if (!user) {
@@ -70,12 +70,12 @@ module.exports = {
     // Add an friend to a user
     async addFriend(req, res) {
         console.log('You are adding an friend');
-        console.log(req.body);
+        // console.log(req.);
     
         try {
           const user = await User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $addToSet: { friends: req.body } },
+            { $addToSet: { friends: req.params.friendId} },
             { runValidators: true, new: true }
           );
     
